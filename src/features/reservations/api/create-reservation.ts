@@ -11,6 +11,9 @@ export const createReservationInputSchema = z.object({
   description: z
     .string()
     .min(1, "Description is required."),
+  responsibleName: z
+    .string()
+    .min(1, "Description is required."),
   reservationDate: z
     .date()
     .min(1, "Reservation date is required."),
