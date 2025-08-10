@@ -4,32 +4,33 @@ import { api } from '@/lib/api-client';
 import { QueryConfig } from '@/lib/react-query';
 import { Reservation } from '#/index';
 
-export const getReservation = ({
-  ReservationId,
+export const getReservation = async ({
+  reservationId,
 }: {
-  ReservationId: string;
-}): Promise<{ data: Reservation }> => {
-  return api.get(`/reservations/${ReservationId}`);
+  reservationId: string;
+}): Promise<Reservation> => {
+  const response = await api.get(`/reservations/${reservationId}`);
+  return response.data;
 };
 
-export const getReservationQueryOptions = (ReservationId: string) => {
+export const getReservationQueryOptions = (reservationId: string) => {
   return queryOptions({
-    queryKey: ['reservations', ReservationId],
-    queryFn: () => getReservation({ ReservationId }),
+    queryKey: ['reservations', reservationId],
+    queryFn: () => getReservation({ reservationId }),
   });
 };
 
 type UseReservationOptions = {
-  ReservationId: string;
+  reservationId: string;
   queryConfig?: QueryConfig<typeof getReservationQueryOptions>;
 };
 
 export const useReservation = ({
-  ReservationId,
+  reservationId,
   queryConfig,
 }: UseReservationOptions) => {
   return useQuery({
-    ...getReservationQueryOptions(ReservationId),
+    ...getReservationQueryOptions(reservationId),
     ...queryConfig,
   });
 };

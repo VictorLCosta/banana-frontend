@@ -3,8 +3,9 @@ import { QueryConfig } from "@/lib/react-query";
 import { Room } from "@/models";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-export const getRooms = (): Promise<Room[]> => {
-  return api.get('/rooms');
+export const getRooms = async (): Promise<Room[]> => {
+  const response = await api.get('/rooms');
+  return response.data;
 };
 
 export const getRoomsQueryOptions = () => {

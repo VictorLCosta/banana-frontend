@@ -1,7 +1,20 @@
+/* eslint-disable react-refresh/only-export-components */
+
 import { CreateReservationForm } from "@/features/reservations/components/create-reservation-form";
+import { getRoomsQueryOptions } from "@/features/rooms/api/get-rooms";
+import { QueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 
-export function ReservationCreatePage() {
+export const clientLoader = (queryClient: QueryClient) => async () => {
+  const query = getRoomsQueryOptions();
+
+  return (
+    queryClient.getQueryData(query.queryKey) ??
+    (await queryClient.fetchQuery(query))
+  );
+};
+
+export default function ReservationCreatePage() {
   const myModalRef = useRef<HTMLDialogElement>(null);
 
   function openModal() {

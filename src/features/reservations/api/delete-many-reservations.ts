@@ -13,15 +13,15 @@ export const createReservationInputSchema = z.object({
 
 export type DeleteManyReservationInput = z.infer<typeof createReservationInputSchema>;
 
-export const deleteReservation = (data: DeleteManyReservationInput) => {
+export const deleteManyReservations = (data: DeleteManyReservationInput) => {
   return api.post(`/reservations/delete-many`, data);
 };
 
 type UseDeleteReservationOptions = {
-  mutationConfig?: MutationConfig<typeof deleteReservation>;
+  mutationConfig?: MutationConfig<typeof deleteManyReservations>;
 };
 
-export const useDeleteReservation = ({
+export const useDeleteManyReservations = ({
   mutationConfig,
 }: UseDeleteReservationOptions = {}) => {
   const queryClient = useQueryClient();
@@ -36,6 +36,6 @@ export const useDeleteReservation = ({
       onSuccess?.(...args);
     },
     ...restConfig,
-    mutationFn: deleteReservation,
+    mutationFn: deleteManyReservations,
   });
 };

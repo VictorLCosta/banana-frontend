@@ -11,6 +11,9 @@ export const updateReservationInputSchema = z.object({
   description: z
     .string()
     .min(1, "Description is required."),
+  responsibleName: z
+    .string()
+    .min(1, "Description is required."),
   reservationDate: z
     .date()
     .min(1, "Reservation date is required."),
@@ -43,12 +46,12 @@ export type UpdateReservationInput = z.infer<typeof updateReservationInputSchema
 
 export const updateReservation = ({
   data,
-  ReservationId,
+  reservationId,
 }: {
   data: UpdateReservationInput;
-  ReservationId: string;
+  reservationId: string;
 }): Promise<Reservation> => {
-  return api.patch(`/Reservations/${ReservationId}`, data);
+  return api.put(`/reservations/${reservationId}`, data);
 };
 
 type UseUpdateReservationOptions = {

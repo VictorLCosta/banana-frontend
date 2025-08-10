@@ -3,11 +3,13 @@ import { QueryConfig } from "@/lib/react-query";
 import { PagedList, Reservation } from "@/models";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-export const getReservations = (
+export const getReservations = async (
   pageNumber: number = 1,
   pageSize: number = 10
 ): Promise<PagedList<Reservation>> => {
-  return api.get('/reservations', { params: { pageNumber, pageSize } });
+  const response = await api.get('/reservations', { params: { pageNumber, pageSize } });
+
+  return response.data;
 };
 
 export const getReservationsQueryOptions = (pageNumber: number = 1, pageSize: number = 10) => {

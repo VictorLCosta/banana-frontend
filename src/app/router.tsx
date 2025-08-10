@@ -1,10 +1,21 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import ProtectedRoute from "@/features/auth/components/protected-route";
-import { useQueryClient } from "@tanstack/react-query";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { AppRoot } from "./routes/root";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const convert = (queryClient: QueryClient) => (m: any) => {
+  const { clientLoader, clientAction, default: Component, ...rest } = m;
+  return {
+    ...rest,
+    loader: clientLoader?.(queryClient),
+    action: clientAction?.(queryClient),
+    Component,
+  };
+};
 
 export const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
@@ -24,24 +35,15 @@ export const createAppRouter = (queryClient: QueryClient) =>
       children: [
         {
           path: '/',
-          lazy: async () => {
-            const component = (await import("./routes/reservation-create")).ReservationCreatePage
-            return { Component: component }
-          },
+          lazy: () => import("./routes/reservation-create").then(convert(queryClient))
         },
         {
           path: '/reservations-new',
-          lazy: async () => {
-            const component = (await import("./routes/reservation-create")).ReservationCreatePage
-            return { Component: component }
-          },
+          lazy: () => import("./routes/reservation-create").then(convert(queryClient))
         },
         {
           path: '/reservations',
-          lazy: async () => {
-            const component = (await import("./routes/reservations")).Reservations
-            return { Component: component }
-          },
+          lazy: () => import("./routes/reservations").then(convert(queryClient))
         },
       ],
     },

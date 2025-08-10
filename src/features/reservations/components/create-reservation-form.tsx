@@ -74,7 +74,7 @@ export function CreateReservationForm() {
           </label>
           <input
             type="date"
-            {...register('reservationDate')}
+            {...register('reservationDate', { valueAsDate: true })}
             className={`input input-bordered w-full ${errors.reservationDate ? 'input-error' : ''}`}
           />
           {errors.reservationDate && <p className="text-error text-sm">{errors.reservationDate.message}</p>}
@@ -110,8 +110,7 @@ export function CreateReservationForm() {
           <label className="label"><span className="label-text">Room</span></label>
           <select {...register('roomId')} className={`select select-bordered w-full ${errors.roomId ? 'select-error' : ''}`} defaultValue="" disabled={roomsLoading}>
             <option value="" disabled>{roomsLoading ? 'Loading rooms...' : 'Select a room'}</option>
-            <option value="088b36b9-cc8b-4feb-9f61-42e15294642e">Moreira, Pereira and Franco</option>
-            {Array.isArray(rooms) && rooms.map(room => (
+            {rooms?.map(room => (
               <option key={room.id} value={room.id}>{room.name}</option>
             ))}
           </select>
