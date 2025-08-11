@@ -107,11 +107,15 @@ export function CreateReservationForm() {
         </div>
 
         <div>
-          <label className="label"><span className="label-text">Room</span></label>
+          <label className="label"><span className="label-text">Room (Location)</span></label>
           <select {...register('roomId')} className={`select select-bordered w-full ${errors.roomId ? 'select-error' : ''}`} defaultValue="" disabled={roomsLoading}>
             <option value="" disabled>{roomsLoading ? 'Loading rooms...' : 'Select a room'}</option>
             {rooms?.map(room => (
-              <option key={room.id} value={room.id}>{room.name}</option>
+              <option key={room.id} value={room.id}>
+                <div className="flex justify-between">
+                  <p>{room.location.street}, {room.location.neighborhood} - {room.location.buildingNumber} - {room.location.city}</p>
+                </div>
+              </option>
             ))}
           </select>
           {roomsError && <p className="text-error text-sm">Failed to load rooms</p>}
@@ -154,7 +158,15 @@ export function CreateReservationForm() {
           Create Reservation
         </button>
 
-        {isError && <p className="text-error mt-2">{(error as any)?.message || 'Error creating reservation'}</p>}
+        {isError && (
+          <div className="text-error mt-2">
+            {Object.values((error as any)?.response?.data?.errors || {})
+              .flat()
+              .map((msg, i) => (
+                <p key={i}>{msg}</p>
+              ))}
+          </div>
+        )}
         {isSuccess && <p className="text-success mt-2">Reservation created successfully!</p>}
       </form>
     </>

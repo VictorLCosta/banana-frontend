@@ -105,7 +105,7 @@ api.interceptors.response.use(
   async (err: AxiosError) => {
     const originalRequest = err.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-    if (err.response?.status === 401 && !originalRequest._retry) {
+    if ((err.response?.status === 401 || err.response?.status === 403) && !originalRequest._retry) {
       if (isRefreshing) {
         // push to queue e aguarda
         return new Promise((resolve, reject) => {

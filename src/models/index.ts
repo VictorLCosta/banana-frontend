@@ -21,7 +21,7 @@ export type Reservation = Entity<{
 export type Room = Entity<{
   name: string;
   capacity: number;
-  address: Address
+  location: Address
 }>;
 
 export type Address = {

@@ -4,8 +4,15 @@ import { CreateReservationForm } from "@/features/reservations/components/create
 import { getRoomsQueryOptions } from "@/features/rooms/api/get-rooms";
 import { QueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
+import { redirect } from "react-router";
 
 export const clientLoader = (queryClient: QueryClient) => async () => {
+  const token = localStorage.getItem('accessToken'); // ou outro mecanismo
+
+  if (!token) {
+    return redirect('/login');
+  }
+
   const query = getRoomsQueryOptions();
 
   return (
